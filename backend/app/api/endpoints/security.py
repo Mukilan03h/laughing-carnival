@@ -1,5 +1,6 @@
 from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import StreamingResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from datetime import datetime
@@ -9,6 +10,7 @@ from app.db.postgres import get_db
 from app.models.security import Visitor, GatePass
 from app.models.user import User
 from app.schemas.security import VisitorCreate, Visitor as VisitorSchema, GatePassCreate, GatePass as GatePassSchema
+from app.services.pdf_generator import generate_gatepass_pdf
 
 router = APIRouter()
 
@@ -100,3 +102,32 @@ async def list_pending_gate_passes(
 ):
     result = await db.execute(select(GatePass).where(GatePass.status == "Pending"))
     return result.scalars().all()
+
+@router.get("/gatepass/{id}/pdf")
+async def get_gatepass_pdf(
+    id: int,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(deps.get_current_user)
+):
+    gatepass = await db.get(GatePass, id)
+    if not gatepass:
+        raise HTTPException(status_code=404, detail="Gate pass not found")
+
+    if not current_user.is_superuser and gatepass.student_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Not authorized")
+
+    data = {
+        "id": gatepass.id,
+        "reason": gatepass.reason,
+        "departure_time": str(gatepass.departure_time),
+        "expected_return": str(gatepass.expected_return),
+        "status": gatepass.status,
+    }
+
+    pdf_buffer = generate_gatepass_pdf(data)
+
+    return StreamingResponse(
+        pdf_buffer,
+        media_type="application/pdf",
+        headers={"Content-Disposition": f"attachment; filename=gatepass_{gatepass.id}.pdf"}
+    )

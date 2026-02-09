@@ -1,5 +1,6 @@
 from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import StreamingResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from datetime import datetime
@@ -8,6 +9,8 @@ from app.api import deps
 from app.db.postgres import get_db
 from app.models.fee import FeeStructure, Invoice, Transaction, PaymentStatus
 from app.models.user import User
+from app.services.pdf_generator import generate_invoice_pdf
+
 from app.schemas.fee import FeeStructureCreate, FeeStructure as FeeStructureSchema, InvoiceCreate, Invoice as InvoiceSchema, TransactionCreate, Transaction as TransactionSchema
 
 router = APIRouter()
@@ -71,6 +74,38 @@ async def list_all_invoices(
 ):
     result = await db.execute(select(Invoice))
     return result.scalars().all()
+
+@router.get("/invoices/{id}/pdf")
+async def get_invoice_pdf(
+    id: int,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(deps.get_current_user)
+):
+    result = await db.execute(select(Invoice).where(Invoice.id == id))
+    invoice = result.scalars().first()
+
+    if not invoice:
+        raise HTTPException(status_code=404, detail="Invoice not found")
+
+    if not current_user.is_superuser and invoice.student_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Not authorized")
+
+    data = {
+        "invoice_number": invoice.invoice_number,
+        "created_at": str(invoice.created_at),
+        "status": invoice.status,
+        "amount_due": invoice.amount_due,
+        # "student_name": invoice.student.full_name # Need eager load
+    }
+
+    pdf_buffer = generate_invoice_pdf(data)
+
+    return StreamingResponse(
+        pdf_buffer,
+        media_type="application/pdf",
+        headers={"Content-Disposition": f"attachment; filename=invoice_{invoice.invoice_number}.pdf"}
+    )
+
 
 # --- Payments ---
 @router.post("/pay", response_model=TransactionSchema)

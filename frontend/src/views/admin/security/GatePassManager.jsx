@@ -122,12 +122,31 @@ export default function GatePassManager() {
                 In: {new Date(pass.expected_return).toLocaleString()}
             </Text>
 
-            {user.is_superuser && pass.status === "Pending" && (
-                <Flex gap="10px">
-                    <Button size="sm" colorScheme="green" onClick={() => handleApprove(pass.id, "Approved")}>Approve</Button>
-                    <Button size="sm" colorScheme="red" onClick={() => handleApprove(pass.id, "Rejected")}>Reject</Button>
-                </Flex>
-            )}
+            <Flex gap="10px">
+                {user.is_superuser && pass.status === "Pending" && (
+                    <>
+                        <Button size="sm" colorScheme="green" onClick={() => handleApprove(pass.id, "Approved")}>Approve</Button>
+                        <Button size="sm" colorScheme="red" onClick={() => handleApprove(pass.id, "Rejected")}>Reject</Button>
+                    </>
+                )}
+                <Button size="sm" colorScheme="blue" onClick={async () => {
+                     try {
+                        const response = await api.get(`/security/gatepass/${pass.id}/pdf`, {
+                            responseType: 'blob',
+                        });
+                        const url = window.URL.createObjectURL(new Blob([response.data]));
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.setAttribute('download', `gatepass_${pass.id}.pdf`);
+                        document.body.appendChild(link);
+                        link.click();
+                      } catch (error) {
+                          console.error("Error downloading PDF", error);
+                      }
+                }}>
+                    PDF
+                </Button>
+            </Flex>
           </Card>
         ))}
       </SimpleGrid>

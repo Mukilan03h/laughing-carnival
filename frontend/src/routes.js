@@ -41,60 +41,25 @@ import AttendanceSheet from 'views/admin/academics/AttendanceSheet';
 import BookCatalog from 'views/admin/library/BookCatalog';
 import IssueReturn from 'views/admin/library/IssueReturn';
 
+// Student Imports
+import StudentDashboard from 'views/student/dashboard';
+import MyFees from 'views/student/fees';
+import MyAcademics from 'views/student/academics';
+
+// Faculty Imports
+import FacultyDashboard from 'views/faculty/dashboard';
+
 // Auth Imports
 import SignInCentered from 'views/auth/signIn';
-import { MdBed, MdAssignment, MdReport, MdAttachMoney, MdReceipt, MdRestaurant, MdFactCheck, MdSecurity, MdDoorFront, MdBook, MdLibraryBooks, MdClass } from 'react-icons/md';
+import { MdBed, MdAssignment, MdReport, MdAttachMoney, MdReceipt, MdRestaurant, MdFactCheck, MdSecurity, MdDoorFront, MdBook, MdLibraryBooks, MdClass, MdDashboard, MdSchool } from 'react-icons/md';
 
-const routes = [
+const adminRoutes = [
   {
     name: 'Main Dashboard',
     layout: '/admin',
     path: '/default',
     icon: <Icon as={MdHome} width="20px" height="20px" color="inherit" />,
     component: <MainDashboard />,
-  },
-  {
-    name: 'NFT Marketplace',
-    layout: '/admin',
-    path: '/nft-marketplace',
-    icon: (
-      <Icon
-        as={MdOutlineShoppingCart}
-        width="20px"
-        height="20px"
-        color="inherit"
-      />
-    ),
-    component: <NFTMarketplace />,
-    secondary: true,
-  },
-  {
-    name: 'Data Tables',
-    layout: '/admin',
-    icon: <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />,
-    path: '/data-tables',
-    component: <DataTables />,
-  },
-  {
-    name: 'Profile',
-    layout: '/admin',
-    path: '/profile',
-    icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
-    component: <Profile />,
-  },
-  {
-    name: 'Sign In',
-    layout: '/auth',
-    path: '/sign-in',
-    icon: <Icon as={MdLock} width="20px" height="20px" color="inherit" />,
-    component: <SignInCentered />,
-  },
-  {
-    name: 'RTL Admin',
-    layout: '/rtl',
-    path: '/rtl-default',
-    icon: <Icon as={MdHome} width="20px" height="20px" color="inherit" />,
-    component: <RTL />,
   },
   {
     name: 'Hostel Rooms',
@@ -187,6 +152,79 @@ const routes = [
     icon: <Icon as={MdBook} width="20px" height="20px" color="inherit" />,
     component: <IssueReturn />,
   },
+  {
+    name: 'Profile',
+    layout: '/admin',
+    path: '/profile',
+    icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
+    component: <Profile />,
+  },
 ];
 
-export default routes;
+const studentRoutes = [
+  {
+    name: 'Student Dashboard',
+    layout: '/student',
+    path: '/dashboard',
+    icon: <Icon as={MdDashboard} width="20px" height="20px" color="inherit" />,
+    component: <StudentDashboard />,
+  },
+  {
+    name: 'My Fees',
+    layout: '/student',
+    path: '/fees',
+    icon: <Icon as={MdAttachMoney} width="20px" height="20px" color="inherit" />,
+    component: <MyFees />,
+  },
+  {
+    name: 'My Academics',
+    layout: '/student',
+    path: '/academics',
+    icon: <Icon as={MdSchool} width="20px" height="20px" color="inherit" />,
+    component: <MyAcademics />,
+  },
+  {
+    name: 'Gate Passes',
+    layout: '/student',
+    path: '/gatepass',
+    icon: <Icon as={MdDoorFront} width="20px" height="20px" color="inherit" />,
+    component: <GatePassManager />,
+  },
+   {
+    name: 'Complaints',
+    layout: '/student',
+    path: '/complaints',
+    icon: <Icon as={MdReport} width="20px" height="20px" color="inherit" />,
+    component: <Complaints />,
+  },
+];
+
+const facultyRoutes = [
+  {
+    name: 'Faculty Dashboard',
+    layout: '/faculty',
+    path: '/dashboard',
+    icon: <Icon as={MdDashboard} width="20px" height="20px" color="inherit" />,
+    component: <FacultyDashboard />,
+  },
+  {
+    name: 'Mark Attendance',
+    layout: '/faculty',
+    path: '/attendance',
+    icon: <Icon as={MdFactCheck} width="20px" height="20px" color="inherit" />,
+    component: <AttendanceSheet />,
+  },
+];
+
+const authRoutes = [
+  {
+    name: 'Sign In',
+    layout: '/auth',
+    path: '/sign-in',
+    icon: <Icon as={MdLock} width="20px" height="20px" color="inherit" />,
+    component: <SignInCentered />,
+  },
+];
+
+export { adminRoutes, studentRoutes, facultyRoutes, authRoutes };
+export default [...adminRoutes, ...studentRoutes, ...facultyRoutes, ...authRoutes];

@@ -23,7 +23,23 @@ export default function Main() {
         <Route
           path="admin/*"
           element={
-            <PrivateRoute>
+            <PrivateRoute roles={['admin', 'faculty', 'warden']}>
+              <AdminLayout theme={currentTheme} setTheme={setCurrentTheme} />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="faculty/*"
+          element={
+            <PrivateRoute roles={['faculty']}>
+              <AdminLayout theme={currentTheme} setTheme={setCurrentTheme} />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="student/*"
+          element={
+            <PrivateRoute roles={['student']}>
               <AdminLayout theme={currentTheme} setTheme={setCurrentTheme} />
             </PrivateRoute>
           }
