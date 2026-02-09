@@ -19,15 +19,32 @@ import { ItemContent } from 'components/menu/ItemContent';
 import { SearchBar } from 'components/navbar/searchBar/SearchBar';
 import { SidebarResponsive } from 'components/sidebar/Sidebar';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 // Assets
 import navImage from 'assets/img/layout/Navbar.png';
 import { MdNotificationsNone, MdInfoOutline } from 'react-icons/md';
 import { IoMdMoon, IoMdSunny } from 'react-icons/io';
 import { FaEthereum } from 'react-icons/fa';
 import routes from 'routes';
+import api from 'api/axios';
+import { useAuth } from 'contexts/AuthContext';
+
 export default function HeaderLinks(props) {
   const { secondary } = props;
+  const { logout } = useAuth();
+  const [notifications, setNotifications] = useState([]);
+
+  useEffect(() => {
+      const fetchNotifications = async () => {
+          try {
+              const response = await api.get('/communication/notifications');
+              setNotifications(response.data);
+          } catch (error) {
+              console.error(error);
+          }
+      };
+      fetchNotifications();
+  }, []);
   const { colorMode, toggleColorMode } = useColorMode();
   // Chakra Color Mode
   const navbarIcon = useColorModeValue('gray.400', 'white');
@@ -136,24 +153,21 @@ export default function HeaderLinks(props) {
             </Text>
           </Flex>
           <Flex flexDirection="column">
-            <MenuItem
-              _hover={{ bg: 'none' }}
-              _focus={{ bg: 'none' }}
-              px="0"
-              borderRadius="8px"
-              mb="10px"
-            >
-              <ItemContent info="Horizon UI Dashboard PRO" />
-            </MenuItem>
-            <MenuItem
-              _hover={{ bg: 'none' }}
-              _focus={{ bg: 'none' }}
-              px="0"
-              borderRadius="8px"
-              mb="10px"
-            >
-              <ItemContent info="Horizon Design System Free" />
-            </MenuItem>
+            {notifications.length === 0 && (
+                <Text p="10px" color="gray.500">No new notifications</Text>
+            )}
+            {notifications.map((notif) => (
+                <MenuItem
+                key={notif.id}
+                _hover={{ bg: 'none' }}
+                _focus={{ bg: 'none' }}
+                px="0"
+                borderRadius="8px"
+                mb="10px"
+                >
+                <ItemContent info={notif.message} />
+                </MenuItem>
+            ))}
           </Flex>
         </MenuList>
       </Menu>
@@ -296,6 +310,7 @@ export default function HeaderLinks(props) {
               color="red.400"
               borderRadius="8px"
               px="14px"
+              onClick={logout}
             >
               <Text fontSize="sm">Log out</Text>
             </MenuItem>

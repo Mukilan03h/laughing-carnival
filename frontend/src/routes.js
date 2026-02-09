@@ -20,6 +20,11 @@ import RTL from 'views/admin/rtl';
 import RoomManagement from 'views/admin/hostel/RoomManagement';
 import Allocation from 'views/admin/hostel/Allocation';
 import Complaints from 'views/admin/hostel/Complaints';
+import Inventory from 'views/admin/hostel/Inventory';
+import Staff from 'views/admin/hostel/Staff';
+
+// Communication Imports
+import NoticeManager from 'views/admin/communication/NoticeManager';
 
 // Fee Imports
 import FeeStructure from 'views/admin/fee/FeeStructure';
@@ -51,7 +56,7 @@ import FacultyDashboard from 'views/faculty/dashboard';
 
 // Auth Imports
 import SignInCentered from 'views/auth/signIn';
-import { MdBed, MdAssignment, MdReport, MdAttachMoney, MdReceipt, MdRestaurant, MdFactCheck, MdSecurity, MdDoorFront, MdBook, MdLibraryBooks, MdClass, MdDashboard, MdSchool } from 'react-icons/md';
+import { MdBed, MdAssignment, MdReport, MdAttachMoney, MdReceipt, MdRestaurant, MdFactCheck, MdSecurity, MdDoorFront, MdBook, MdLibraryBooks, MdClass, MdDashboard, MdSchool, MdInventory, MdPeople, MdAnnouncement } from 'react-icons/md';
 
 const adminRoutes = [
   {
@@ -81,6 +86,27 @@ const adminRoutes = [
     path: '/hostel/complaints',
     icon: <Icon as={MdReport} width="20px" height="20px" color="inherit" />,
     component: <Complaints />,
+  },
+  {
+    name: 'Inventory',
+    layout: '/admin',
+    path: '/hostel/inventory',
+    icon: <Icon as={MdInventory} width="20px" height="20px" color="inherit" />,
+    component: <Inventory />,
+  },
+  {
+    name: 'Staff',
+    layout: '/admin',
+    path: '/hostel/staff',
+    icon: <Icon as={MdPeople} width="20px" height="20px" color="inherit" />,
+    component: <Staff />,
+  },
+  {
+    name: 'Notices',
+    layout: '/admin',
+    path: '/communication/notices',
+    icon: <Icon as={MdAnnouncement} width="20px" height="20px" color="inherit" />,
+    component: <NoticeManager />,
   },
   {
     name: 'Fee Structures',
