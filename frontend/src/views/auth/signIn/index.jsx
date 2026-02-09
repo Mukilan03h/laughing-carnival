@@ -62,14 +62,22 @@ function SignIn() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      await login(email, password);
+      const user = await login(email, password);
       toast({
         title: "Login successful.",
         status: "success",
         duration: 3000,
         isClosable: true,
       });
-      navigate("/admin/default");
+
+      // Redirect based on role
+      if (user.role?.name === 'student') {
+          navigate("/student/dashboard");
+      } else if (user.role?.name === 'faculty') {
+          navigate("/faculty/dashboard");
+      } else {
+          navigate("/admin/default");
+      }
     } catch (error) {
       toast({
         title: "Login failed.",

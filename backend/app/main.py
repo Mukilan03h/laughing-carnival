@@ -29,6 +29,9 @@ async def startup_event():
     from app.models.security import Visitor, GatePass  # noqa: F401
     from app.models.academic import Course, Subject, Attendance  # noqa: F401
     from app.models.library import Book, BookIssue  # noqa: F401
+    from app.models.communication import Notice, Notification  # noqa: F401
+    from app.models.inventory import InventoryItem  # noqa: F401
+    from app.models.staff import StaffMember  # noqa: F401
 
     from app.db.init_db import init_db
     await init_db()
