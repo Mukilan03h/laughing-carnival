@@ -25,9 +25,25 @@ import Complaints from 'views/admin/hostel/Complaints';
 import FeeStructure from 'views/admin/fee/FeeStructure';
 import Invoices from 'views/admin/fee/Invoices';
 
+// Mess Imports
+import MessMenu from 'views/admin/mess/MessMenu';
+import MessAttendance from 'views/admin/mess/MessAttendance';
+
+// Security Imports
+import VisitorLog from 'views/admin/security/VisitorLog';
+import GatePassManager from 'views/admin/security/GatePassManager';
+
+// Academics Imports
+import CourseManager from 'views/admin/academics/CourseManager';
+import AttendanceSheet from 'views/admin/academics/AttendanceSheet';
+
+// Library Imports
+import BookCatalog from 'views/admin/library/BookCatalog';
+import IssueReturn from 'views/admin/library/IssueReturn';
+
 // Auth Imports
 import SignInCentered from 'views/auth/signIn';
-import { MdBed, MdAssignment, MdReport, MdAttachMoney, MdReceipt } from 'react-icons/md';
+import { MdBed, MdAssignment, MdReport, MdAttachMoney, MdReceipt, MdRestaurant, MdFactCheck, MdSecurity, MdDoorFront, MdBook, MdLibraryBooks, MdClass } from 'react-icons/md';
 
 const routes = [
   {
@@ -114,6 +130,62 @@ const routes = [
     path: '/fee/invoices',
     icon: <Icon as={MdReceipt} width="20px" height="20px" color="inherit" />,
     component: <Invoices />,
+  },
+  {
+    name: 'Mess Menu',
+    layout: '/admin',
+    path: '/mess/menu',
+    icon: <Icon as={MdRestaurant} width="20px" height="20px" color="inherit" />,
+    component: <MessMenu />,
+  },
+  {
+    name: 'Mess Attendance',
+    layout: '/admin',
+    path: '/mess/attendance',
+    icon: <Icon as={MdFactCheck} width="20px" height="20px" color="inherit" />,
+    component: <MessAttendance />,
+  },
+  {
+    name: 'Visitor Log',
+    layout: '/admin',
+    path: '/security/visitors',
+    icon: <Icon as={MdSecurity} width="20px" height="20px" color="inherit" />,
+    component: <VisitorLog />,
+  },
+  {
+    name: 'Gate Passes',
+    layout: '/admin',
+    path: '/security/gatepass',
+    icon: <Icon as={MdDoorFront} width="20px" height="20px" color="inherit" />,
+    component: <GatePassManager />,
+  },
+  {
+    name: 'Courses',
+    layout: '/admin',
+    path: '/academics/courses',
+    icon: <Icon as={MdClass} width="20px" height="20px" color="inherit" />,
+    component: <CourseManager />,
+  },
+  {
+    name: 'Class Attendance',
+    layout: '/admin',
+    path: '/academics/attendance',
+    icon: <Icon as={MdFactCheck} width="20px" height="20px" color="inherit" />,
+    component: <AttendanceSheet />,
+  },
+  {
+    name: 'Library Catalog',
+    layout: '/admin',
+    path: '/library/books',
+    icon: <Icon as={MdLibraryBooks} width="20px" height="20px" color="inherit" />,
+    component: <BookCatalog />,
+  },
+  {
+    name: 'Issue Book',
+    layout: '/admin',
+    path: '/library/issue',
+    icon: <Icon as={MdBook} width="20px" height="20px" color="inherit" />,
+    component: <IssueReturn />,
   },
 ];
 
