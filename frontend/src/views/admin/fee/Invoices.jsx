@@ -174,11 +174,30 @@ export default function Invoices() {
             <Text fontSize="xs" color="gray.400" mb="15px">
                 Due Date: {new Date(invoice.due_date).toLocaleDateString()}
             </Text>
-            {user.is_superuser && invoice.status !== "Paid" && (
-                <Button size="sm" colorScheme="green" onClick={() => openPaymentModal(invoice)}>
-                    Record Payment
+            <Flex gap="10px">
+                {user.is_superuser && invoice.status !== "Paid" && (
+                    <Button size="sm" colorScheme="green" onClick={() => openPaymentModal(invoice)}>
+                        Record Payment
+                    </Button>
+                )}
+                <Button size="sm" colorScheme="blue" onClick={async () => {
+                     try {
+                        const response = await api.get(`/fees/invoices/${invoice.id}/pdf`, {
+                            responseType: 'blob',
+                        });
+                        const url = window.URL.createObjectURL(new Blob([response.data]));
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.setAttribute('download', `invoice_${invoice.invoice_number}.pdf`);
+                        document.body.appendChild(link);
+                        link.click();
+                      } catch (error) {
+                          console.error("Error downloading PDF", error);
+                      }
+                }}>
+                    PDF
                 </Button>
-            )}
+            </Flex>
           </Card>
         ))}
       </SimpleGrid>

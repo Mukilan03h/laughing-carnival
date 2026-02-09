@@ -29,8 +29,9 @@ async def startup_event():
     from app.models.security import Visitor, GatePass  # noqa: F401
     from app.models.academic import Course, Subject, Attendance  # noqa: F401
     from app.models.library import Book, BookIssue  # noqa: F401
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+
+    from app.db.init_db import init_db
+    await init_db()
 
 @app.get("/health")
 def health_check():

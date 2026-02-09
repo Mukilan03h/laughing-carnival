@@ -7,11 +7,22 @@ import Sidebar from 'components/sidebar/Sidebar.js';
 import { SidebarContext } from 'contexts/SidebarContext';
 import React, { useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import routes from 'routes.js';
+import { adminRoutes, studentRoutes, facultyRoutes } from 'routes.js';
+import { useAuth } from 'contexts/AuthContext';
 
 // Custom Chakra theme
 export default function Dashboard(props) {
   const { ...rest } = props;
+  const { user } = useAuth();
+
+  // Determine routes based on role
+  let activeRoutes = adminRoutes;
+  if (user && user.role?.name === 'student') {
+      activeRoutes = studentRoutes;
+  } else if (user && user.role?.name === 'faculty') {
+      activeRoutes = facultyRoutes;
+  }
+
   // states and functions
   const [fixed] = useState(false);
   const [toggleSidebar, setToggleSidebar] = useState(false);
@@ -114,7 +125,7 @@ export default function Dashboard(props) {
             setToggleSidebar,
           }}
         >
-          <Sidebar routes={routes} display="none" {...rest} />
+          <Sidebar routes={activeRoutes} display="none" {...rest} />
           <Box
             float="right"
             minHeight="100vh"
@@ -133,10 +144,10 @@ export default function Dashboard(props) {
               <Box>
                 <Navbar
                   onOpen={onOpen}
-                  logoText={'Horizon UI Dashboard PRO'}
-                  brandText={getActiveRoute(routes)}
-                  secondary={getActiveNavbar(routes)}
-                  message={getActiveNavbarText(routes)}
+                  logoText={'College ERP'}
+                  brandText={getActiveRoute(activeRoutes)}
+                  secondary={getActiveNavbar(activeRoutes)}
+                  message={getActiveNavbarText(activeRoutes)}
                   fixed={fixed}
                   {...rest}
                 />
@@ -152,10 +163,14 @@ export default function Dashboard(props) {
                 pt="50px"
               >
                 <Routes>
-                  {getRoutes(routes)}
+                  {getRoutes(activeRoutes)}
                   <Route
                     path="/"
-                    element={<Navigate to="/admin/default" replace />}
+                    element={<Navigate to={
+                        user?.role?.name === 'student' ? "/student/dashboard" :
+                        user?.role?.name === 'faculty' ? "/faculty/dashboard" :
+                        "/admin/default"
+                    } replace />}
                   />
                 </Routes>
               </Box>

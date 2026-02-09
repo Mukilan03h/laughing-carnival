@@ -10,3 +10,4 @@ boto3==1.34.34
 pydantic==2.6.0
 pydantic-settings==2.1.0
 email-validator==2.1.0.post1
+reportlab==4.1.0
