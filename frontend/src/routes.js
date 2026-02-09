@@ -50,9 +50,11 @@ import IssueReturn from 'views/admin/library/IssueReturn';
 import StudentDashboard from 'views/student/dashboard';
 import MyFees from 'views/student/fees';
 import MyAcademics from 'views/student/academics';
+import ExamResults from 'views/student/results';
 
 // Faculty Imports
 import FacultyDashboard from 'views/faculty/dashboard';
+import ExamManager from 'views/faculty/exams';
 
 // Auth Imports
 import SignInCentered from 'views/auth/signIn';
@@ -210,6 +212,13 @@ const studentRoutes = [
     component: <MyAcademics />,
   },
   {
+    name: 'Exam Results',
+    layout: '/student',
+    path: '/results',
+    icon: <Icon as={MdClass} width="20px" height="20px" color="inherit" />,
+    component: <ExamResults />,
+  },
+  {
     name: 'Gate Passes',
     layout: '/student',
     path: '/gatepass',
@@ -240,6 +249,72 @@ const facultyRoutes = [
     icon: <Icon as={MdFactCheck} width="20px" height="20px" color="inherit" />,
     component: <AttendanceSheet />,
   },
+  {
+    name: 'Exams',
+    layout: '/faculty',
+    path: '/exams',
+    icon: <Icon as={MdClass} width="20px" height="20px" color="inherit" />,
+    component: <ExamManager />,
+  },
+];
+
+const wardenRoutes = [
+  {
+    name: 'Hostel Rooms',
+    layout: '/warden',
+    path: '/rooms',
+    icon: <Icon as={MdBed} width="20px" height="20px" color="inherit" />,
+    component: <RoomManagement />,
+  },
+  {
+    name: 'Allocation',
+    layout: '/warden',
+    path: '/allocation',
+    icon: <Icon as={MdAssignment} width="20px" height="20px" color="inherit" />,
+    component: <Allocation />,
+  },
+  {
+    name: 'Complaints',
+    layout: '/warden',
+    path: '/complaints',
+    icon: <Icon as={MdReport} width="20px" height="20px" color="inherit" />,
+    component: <Complaints />,
+  },
+  {
+    name: 'Inventory',
+    layout: '/warden',
+    path: '/inventory',
+    icon: <Icon as={MdInventory} width="20px" height="20px" color="inherit" />,
+    component: <Inventory />,
+  },
+  {
+    name: 'Staff',
+    layout: '/warden',
+    path: '/staff',
+    icon: <Icon as={MdPeople} width="20px" height="20px" color="inherit" />,
+    component: <Staff />,
+  },
+  {
+    name: 'Mess Menu',
+    layout: '/warden',
+    path: '/mess/menu',
+    icon: <Icon as={MdRestaurant} width="20px" height="20px" color="inherit" />,
+    component: <MessMenu />,
+  },
+  {
+    name: 'Gate Passes',
+    layout: '/warden',
+    path: '/gatepass',
+    icon: <Icon as={MdDoorFront} width="20px" height="20px" color="inherit" />,
+    component: <GatePassManager />,
+  },
+  {
+    name: 'Notices',
+    layout: '/warden',
+    path: '/notices',
+    icon: <Icon as={MdAnnouncement} width="20px" height="20px" color="inherit" />,
+    component: <NoticeManager />,
+  },
 ];
 
 const authRoutes = [
@@ -252,5 +327,5 @@ const authRoutes = [
   },
 ];
 
-export { adminRoutes, studentRoutes, facultyRoutes, authRoutes };
-export default [...adminRoutes, ...studentRoutes, ...facultyRoutes, ...authRoutes];
+export { adminRoutes, studentRoutes, facultyRoutes, wardenRoutes, authRoutes };
+export default [...adminRoutes, ...studentRoutes, ...facultyRoutes, ...wardenRoutes, ...authRoutes];

@@ -75,6 +75,8 @@ function SignIn() {
           navigate("/student/dashboard");
       } else if (user.role?.name === 'faculty') {
           navigate("/faculty/dashboard");
+      } else if (user.role?.name === 'warden') {
+          navigate("/warden/rooms");
       } else {
           navigate("/admin/default");
       }

@@ -29,6 +29,14 @@ export default function Main() {
           }
         />
         <Route
+          path="warden/*"
+          element={
+            <PrivateRoute roles={['warden']}>
+              <AdminLayout theme={currentTheme} setTheme={setCurrentTheme} />
+            </PrivateRoute>
+          }
+        />
+        <Route
           path="faculty/*"
           element={
             <PrivateRoute roles={['faculty']}>

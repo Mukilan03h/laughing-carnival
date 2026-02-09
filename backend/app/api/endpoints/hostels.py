@@ -125,11 +125,12 @@ async def list_complaints(
     current_user: User = Depends(deps.get_current_user)
 ):
     complaints = []
-    cursor = db.complaints.find({"student_id": current_user.id}) # Filter for student
-    # Admin should see all? For now just own.
-    # If admin:
-    if current_user.is_superuser:
+
+    # ABAC: Admin/Warden sees all, Student sees own
+    if current_user.is_superuser or (current_user.role and current_user.role.name == "warden"):
         cursor = db.complaints.find()
+    else:
+        cursor = db.complaints.find({"student_id": current_user.id})
 
     async for doc in cursor:
         doc["id"] = str(doc["_id"])

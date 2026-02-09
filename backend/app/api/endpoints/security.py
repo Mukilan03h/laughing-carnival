@@ -75,8 +75,12 @@ async def approve_gate_pass(
     gatepass_id: int,
     status: str, # Approved, Rejected
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(deps.get_current_active_superuser)
+    current_user: User = Depends(deps.get_current_user)
 ):
+    # RBAC: Warden or Admin only
+    if not current_user.is_superuser and (not current_user.role or current_user.role.name != "warden"):
+         raise HTTPException(status_code=403, detail="Not authorized")
+
     gatepass = await db.get(GatePass, gatepass_id)
     if not gatepass:
         raise HTTPException(status_code=404, detail="Gate pass not found")
@@ -98,8 +102,12 @@ async def list_my_gate_passes(
 @router.get("/gatepass/pending", response_model=List[GatePassSchema])
 async def list_pending_gate_passes(
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(deps.get_current_active_superuser)
+    current_user: User = Depends(deps.get_current_user)
 ):
+    # RBAC: Warden or Admin only
+    if not current_user.is_superuser and (not current_user.role or current_user.role.name != "warden"):
+         raise HTTPException(status_code=403, detail="Not authorized")
+
     result = await db.execute(select(GatePass).where(GatePass.status == "Pending"))
     return result.scalars().all()
 

@@ -7,7 +7,7 @@ import Sidebar from 'components/sidebar/Sidebar.js';
 import { SidebarContext } from 'contexts/SidebarContext';
 import React, { useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { adminRoutes, studentRoutes, facultyRoutes } from 'routes.js';
+import { adminRoutes, studentRoutes, facultyRoutes, wardenRoutes } from 'routes.js';
 import { useAuth } from 'contexts/AuthContext';
 
 // Custom Chakra theme
@@ -21,6 +21,8 @@ export default function Dashboard(props) {
       activeRoutes = studentRoutes;
   } else if (user && user.role?.name === 'faculty') {
       activeRoutes = facultyRoutes;
+  } else if (user && user.role?.name === 'warden') {
+      activeRoutes = wardenRoutes;
   }
 
   // states and functions
@@ -169,6 +171,7 @@ export default function Dashboard(props) {
                     element={<Navigate to={
                         user?.role?.name === 'student' ? "/student/dashboard" :
                         user?.role?.name === 'faculty' ? "/faculty/dashboard" :
+                        user?.role?.name === 'warden' ? "/warden/rooms" :
                         "/admin/default"
                     } replace />}
                   />
