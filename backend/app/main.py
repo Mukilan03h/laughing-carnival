@@ -25,6 +25,10 @@ async def startup_event():
     from app.models.user import User  # noqa: F401
     from app.models.hostel import Hostel, Room, Bed, Allocation  # noqa: F401
     from app.models.fee import FeeStructure, Invoice, Transaction  # noqa: F401
+    from app.models.mess import MessMenu, MessAttendance, MessBill  # noqa: F401
+    from app.models.security import Visitor, GatePass  # noqa: F401
+    from app.models.academic import Course, Subject, Attendance  # noqa: F401
+    from app.models.library import Book, BookIssue  # noqa: F401
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
