@@ -26,6 +26,10 @@ import Staff from 'views/admin/hostel/Staff';
 // Communication Imports
 import NoticeManager from 'views/admin/communication/NoticeManager';
 
+// Settings & HR Imports
+import UserManagement from 'views/admin/settings/UserManagement';
+import Analytics from 'views/admin/reports/Analytics';
+
 // Fee Imports
 import FeeStructure from 'views/admin/fee/FeeStructure';
 import Invoices from 'views/admin/fee/Invoices';
@@ -55,10 +59,11 @@ import ExamResults from 'views/student/results';
 // Faculty Imports
 import FacultyDashboard from 'views/faculty/dashboard';
 import ExamManager from 'views/faculty/exams';
+import LeaveApplication from 'views/faculty/hr/LeaveApplication';
 
 // Auth Imports
 import SignInCentered from 'views/auth/signIn';
-import { MdBed, MdAssignment, MdReport, MdAttachMoney, MdReceipt, MdRestaurant, MdFactCheck, MdSecurity, MdDoorFront, MdBook, MdLibraryBooks, MdClass, MdDashboard, MdSchool, MdInventory, MdPeople, MdAnnouncement } from 'react-icons/md';
+import { MdBed, MdAssignment, MdReport, MdAttachMoney, MdReceipt, MdRestaurant, MdFactCheck, MdSecurity, MdDoorFront, MdBook, MdLibraryBooks, MdClass, MdDashboard, MdSchool, MdInventory, MdPeople, MdAnnouncement, MdSettings, MdAnalytics, MdWorkOff } from 'react-icons/md';
 
 const adminRoutes = [
   {
@@ -181,6 +186,20 @@ const adminRoutes = [
     component: <IssueReturn />,
   },
   {
+    name: 'Reports',
+    layout: '/admin',
+    path: '/reports',
+    icon: <Icon as={MdAnalytics} width="20px" height="20px" color="inherit" />,
+    component: <Analytics />,
+  },
+  {
+    name: 'User Management',
+    layout: '/admin',
+    path: '/settings/users',
+    icon: <Icon as={MdSettings} width="20px" height="20px" color="inherit" />,
+    component: <UserManagement />,
+  },
+  {
     name: 'Profile',
     layout: '/admin',
     path: '/profile',
@@ -255,6 +274,13 @@ const facultyRoutes = [
     path: '/exams',
     icon: <Icon as={MdClass} width="20px" height="20px" color="inherit" />,
     component: <ExamManager />,
+  },
+  {
+    name: 'Apply Leave',
+    layout: '/faculty',
+    path: '/hr/leave',
+    icon: <Icon as={MdWorkOff} width="20px" height="20px" color="inherit" />,
+    component: <LeaveApplication />,
   },
 ];
 

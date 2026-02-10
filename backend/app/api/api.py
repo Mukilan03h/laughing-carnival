@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.api.endpoints import auth, users, hostels, fees, mess, security, academics, library, communication, hostel_ops, exams
+from app.api.endpoints import auth, users, hostels, fees, mess, security, academics, library, communication, hostel_ops, exams, hr
 
 api_router = APIRouter()
 api_router.include_router(auth.router, tags=["login"])
@@ -13,3 +13,4 @@ api_router.include_router(library.router, prefix="/library", tags=["library"])
 api_router.include_router(communication.router, prefix="/communication", tags=["communication"])
 api_router.include_router(hostel_ops.router, prefix="/hostels", tags=["hostel_ops"])
 api_router.include_router(exams.router, prefix="/academics", tags=["exams"])
+api_router.include_router(hr.router, prefix="/hr", tags=["hr"])
